@@ -1,6 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-06-27T10:13:01+08:00</updated><id>http://localhost:4000/</id><title type="html">initeasylife</title><subtitle>天堂有路我不走，学海无涯苦作舟</subtitle><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/jekyll/update/2018/06/27/svm.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2018-06-27T09:47:50+08:00</published><updated>2018-06-27T09:47:50+08:00</updated><id>http://localhost:4000/jekyll/update/2018/06/27/svm</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2018/06/27/svm.html">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt; &lt;/script&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-06-27T10:36:21+08:00</updated><id>http://localhost:4000/</id><title type="html">initeasylife</title><subtitle>天堂有路我不走，学海无涯苦作舟</subtitle><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/jekyll/update/2018/06/27/test.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2018-06-27T09:47:50+08:00</published><updated>2018-06-27T09:47:50+08:00</updated><id>http://localhost:4000/jekyll/update/2018/06/27/test</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2018/06/27/test.html">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt; &lt;/script&gt;
 
 &lt;h1 id=&quot;svm&quot;&gt;SVM&lt;/h1&gt;
+&lt;h2 id=&quot;functional-margin&quot;&gt;Functional margin：&lt;/h2&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\hat{\gamma}^{(i)}=y^{(i)}(w\cdot x^{(i)}+b) \tag{1}&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\hat{\gamma}=\min_{i=1,\ldots,m}\hat{\gamma}^{(i)} \tag{2}&lt;/script&gt;
+
+&lt;h2 id=&quot;geometric-margin&quot;&gt;Geometric margin:&lt;/h2&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\gamma^{(i)}=y^{(i)}(\frac{w}{||w||}\cdot x^{(i)}+\frac{b}{||w||})=\frac{\hat{\gamma}^{(i)}}{||w||}\tag{3}&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\gamma=\min_{i=1,\ldots,m}\gamma^{(i)}\tag{4}&lt;/script&gt;
+
+&lt;h2 id=&quot;the-optimal-margin-classifier&quot;&gt;The optimal margin classifier&lt;/h2&gt;
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\max_{w,b}\ \ \gamma\tag{5}&lt;/script&gt;
+&lt;script type=&quot;math/tex&quot;&gt;s.t. \ \ \ y^{(i)}(\frac{w}{||w||}\cdot x^{(i)}+\frac{b}{||w||})\geq \gamma,\ \ i=1,\ldots,m\tag{6}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;由公式（3）可得：
+&lt;script type=&quot;math/tex&quot;&gt;\max_{w,b}\ \ \frac{\hat{\gamma}}{||w||} \tag{7}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;s.t. \ \ \ y^{(i)}(w\cdot x^{(i)}+b)\geq\hat{\gamma},\ \ i=1,\ldots,m\tag{8}&lt;/script&gt;
+令\(\hat{\gamma}=1\)，可得：
+&lt;script type=&quot;math/tex&quot;&gt;\min_{w,b}\ \ \frac{1}{2}||w||^2\tag{9}&lt;/script&gt;
+&lt;script type=&quot;math/tex&quot;&gt;s.t.\ \ y^{(i)}(w\cdot x^{(i)}+b)-1\geq0,\ \ i=1,\ldots,m\tag{10}&lt;/script&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">SVM数学详解</title><link href="http://localhost:4000/jekyll/update/2018/06/27/svm.html" rel="alternate" type="text/html" title="SVM数学详解" /><published>2018-06-27T09:47:50+08:00</published><updated>2018-06-27T09:47:50+08:00</updated><id>http://localhost:4000/jekyll/update/2018/06/27/svm</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2018/06/27/svm.html">&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt; &lt;/script&gt;
+
 &lt;h2 id=&quot;functional-margin&quot;&gt;Functional margin：&lt;/h2&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\hat{\gamma}^{(i)}=y^{(i)}(w\cdot x^{(i)}+b) \tag{1}&lt;/script&gt;
