@@ -1,12 +1,11 @@
 ---
 layout: post
-title:  "Welcome to Jekyll!"
+title:  "SVM数学详解"
 date:   2018-06-27 09:47:50 +0800
 categories: jekyll update
 ---
 <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
 
-# SVM
 ## Functional margin：
 
 $$\hat{\gamma}^{(i)}=y^{(i)}(w\cdot x^{(i)}+b) \tag{1}$$
