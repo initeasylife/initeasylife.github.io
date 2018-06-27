@@ -5,7 +5,7 @@ date:   2018-06-27 09:47:50 +0800
 categories: jekyll update
 ---
 <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
-
+前方数学公式高能预警(╯‵□′)╯︵┻━┻
 ## Functional margin：
 
 $$\hat{\gamma}^{(i)}=y^{(i)}(w\cdot x^{(i)}+b) \tag{1}$$
