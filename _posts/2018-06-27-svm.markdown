@@ -20,14 +20,18 @@ $$\gamma=\min_{i=1,\ldots,m}\gamma^{(i)}\tag{4}$$
 
 ## The optimal margin classifier
 $$\max_{w,b}\ \ \gamma\tag{5}$$
+
 $$s.t. \ \ \ y^{(i)}(\frac{w}{||w||}\cdot x^{(i)}+\frac{b}{||w||})\geq \gamma,\ \ i=1,\ldots,m\tag{6}$$
 
 由公式（3）可得：
 $$\max_{w,b}\ \ \frac{\hat{\gamma}}{||w||} \tag{7}$$
 
 $$s.t. \ \ \ y^{(i)}(w\cdot x^{(i)}+b)\geq\hat{\gamma},\ \ i=1,\ldots,m\tag{8}$$
+
 令\\(\hat{\gamma}=1\\)，可得：
+
 $$\min_{w,b}\ \ \frac{1}{2}||w||^2\tag{9}$$
+
 $$s.t.\ \ y^{(i)}(w\cdot x^{(i)}+b)-1\geq0,\ \ i=1,\ldots,m\tag{10}$$
 
 
