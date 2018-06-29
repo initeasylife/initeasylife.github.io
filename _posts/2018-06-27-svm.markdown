@@ -5,7 +5,10 @@ date:   2018-06-27 09:47:50 +0800
 categories: jekyll update
 ---
 <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+前方数学公式高能预警(╯‵□′)╯︵┻━┻
 
+
+非战斗人员迅速撤离
 ## Functional margin：
 
 $$\hat{\gamma}^{(i)}=y^{(i)}(w\cdot x^{(i)}+b) \tag{1}$$
@@ -20,6 +23,8 @@ $$\gamma=\min_{i=1,\ldots,m}\gamma^{(i)}\tag{4}$$
 
 ## The optimal margin classifier
 $$\max_{w,b}\ \ \gamma\tag{5}$$
+
+
 $$s.t. \ \ \ y^{(i)}(\frac{w}{||w||}\cdot x^{(i)}+\frac{b}{||w||})\geq \gamma,\ \ i=1,\ldots,m\tag{6}$$
 
 由公式（3）可得：
@@ -30,6 +35,50 @@ $$s.t. \ \ \ y^{(i)}(w\cdot x^{(i)}+b)\geq\hat{\gamma},\ \ i=1,\ldots,m\tag{8}$$
 $$\min_{w,b}\ \ \frac{1}{2}||w||^2\tag{9}$$
 $$s.t.\ \ y^{(i)}(w\cdot x^{(i)}+b)-1\geq0,\ \ i=1,\ldots,m\tag{10}$$
 
+
+通过求解对偶问题求解原问题，构造Lagrange公式：
+
+
+$$L(w,b,a)=\frac{1}{2}||w||^2-\sum_{i=1}^m \alpha _i [y^{(i)}(w \cdot x^{(i)}+b)-1]\tag{11}$$
+
+
+求\\(\min_{w,b}L(w,b,\alpha)\\):
+
+
+$$\nabla_wL(w,b,\alpha)=0\tag{12}$$
+
+
+$$\nabla_bL(w,b,\alpha)=0\tag{13}$$
+
+
+得：
+
+
+$$w=\sum_{i=1}^m \alpha _i y^{(i)}x^{(i)}\tag{14}$$
+
+
+$$\sum_{i=1}^m \alpha _i y^{(i)}=0\tag{15}$$
+
+
+将（14），（15）带入（11），得：
+
+
+$$L(w,b,\alpha)=\sum_{i=1}^m \alpha _i-\frac{1}{2} \sum _{i,j=1}^m y^{(i)}y^{(j)} \alpha _i \alpha _j (x^{(i)}\cdot x^{(j)})\tag{16}$$
+
+
+接下来求对偶问题：
+
+
+$$\max _{\alpha} \sum _{i=1} ^m \alpha _i-\frac{1}{2} \sum _{i,j=1}^m y^{(i)}y^{(j)} \alpha _i \alpha _j (x^{(i)}\cdot x^{(j)})\tag{17}$$
+
+
+$$s.t. \ \ \alpha _i \geq 0,i=1,\ldots,m\tag{18}$$
+
+
+$$\sum_{i=1}^m \alpha _i y^{(i)}=0\tag{19}$$
+
+
+至此，
 
 
 
