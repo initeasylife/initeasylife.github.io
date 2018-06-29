@@ -36,7 +36,7 @@ $$\min_{w,b}\ \ \frac{1}{2}||w||^2\tag{9}$$
 $$s.t.\ \ y^{(i)}(w\cdot x^{(i)}+b)-1\geq0,\ \ i=1,\ldots,m\tag{10}$$
 
 
-通过求解对偶问题求解原问题，构造Lagrange公式：
+通过求解对偶问题求解原问题，构造Lagrange公式(详见[Lagrange Duality](https://initeasylife.github.io/jekyll/update/2018/06/29/Lagrange-Duality.html))：
 
 
 $$L(w,b,a)=\frac{1}{2}||w||^2-\sum_{i=1}^m \alpha _i [y^{(i)}(w \cdot x^{(i)}+b)-1]\tag{11}$$
