@@ -1,3 +1,5 @@
+<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+
 首先要说明的是，这是两套不同的体系，并且相互诋毁不互相认，而现今的教科书和实践中，已经把这些概念混淆起来了，想必这是两套体系的发明者不愿意看到的状况。
 # 显著性检验
 由[Ronald Fisher](https://en.wikipedia.org/wiki/Ronald_Fisher)首先提出，具体过程如下：
