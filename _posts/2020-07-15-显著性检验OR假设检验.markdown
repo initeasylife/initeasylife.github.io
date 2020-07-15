@@ -4,7 +4,6 @@ title:  "显著性检验OR假设检验"
 date:   2020-07-15 09:47:50 +0800
 categories: jekyll update
 ---
-<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
 
 首先要说明的是，这是两套不同的体系，并且相互诋毁不互相认，而现今的教科书和实践中，已经把这些概念混淆起来了，想必这是两套体系的发明者不愿意看到的状况。
 # 显著性检验
