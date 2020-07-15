@@ -37,7 +37,7 @@ $$d^*=\max _{\alpha,\beta ;\alpha _i \geq0}\theta _D(\alpha,\beta)\tag{8}$$
 
 ### KKT Conditions:
 
-\\(\alpha^ *,\beta^ *\\)为对偶问题的解，$x^ *$为原问题的解，则：
+\\(\alpha^ *,\beta^ *\\)为对偶问题的解，\\(x^ *\\)为原问题的解，则：
 
 
 $$\forall\ \ \alpha \geq 0,\beta\ \tag{9}$$
