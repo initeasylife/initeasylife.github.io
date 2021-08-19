@@ -4,7 +4,7 @@ title:  "Pearson correlation coefficient"
 date:   2018-06-29 09:47:50 +0800
 categories: jekyll update
 ---
-
+<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
 # 定义
 $$Pearson = \frac{Cov(X,Y)}{\sigma_X\sigma_Y} = \frac{E[(X-\bar X)(Y-\bar Y)]}{\sigma_X\sigma_Y}=\frac{\sum(x_i-\bar x)(y_i-\bar y)}{\sqrt{\sum(x_i-\bar x)^2\sum(y_i-\bar y)^2}}$$
 
