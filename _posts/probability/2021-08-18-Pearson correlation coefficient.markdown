@@ -9,7 +9,10 @@ categories: jekyll update
 # 定义
 $$Pearson = \frac{Cov(X,Y)}{\sigma_X\sigma_Y} = \frac{E[(X-\bar X)(Y-\bar Y)]}{\sigma_X\sigma_Y}=\frac{\sum(x_i-\bar x)(y_i-\bar y)}{\sqrt{\sum(x_i-\bar x)^2\sum(y_i-\bar y)^2}}$$
 
+
 $$Cosine = \frac{X\cdot Y}{\lVert X \rVert \lVert Y \rVert}=\frac{\sum x_iy_i}{\sqrt{\sum x_i^2 \sum y_i^2}}$$
+
+
 
 $$Euclidean = \sqrt{\sum(x_i-y_i)^2} $$
 
