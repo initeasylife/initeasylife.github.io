@@ -18,7 +18,7 @@ $$Euclidean = \sqrt{\sum(x_i-y_i)^2} $$
 
 由公式可得
 
-1. 当X和Y的期望为0时，Pearson和Cosine等价
+1. 当X和Y的期望为0时，Pearson和Cosine等价。Pearson就是中心化后的Cosine。
 
 2. 如果X已经标准化，那么
 $$\sum X_i^2 = \sum (X_i-\mu_X)^2=(n-1)\sigma_X=n-1$$
