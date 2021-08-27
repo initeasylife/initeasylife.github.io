@@ -42,4 +42,35 @@ $P = A(A^TA)^{-1}A^T$
 
 当b不在C(A)之内时，Ax=b无解，故在C(A)内找一个与b最接近的向量代替b求解，即b在C(A)上的投影$A\hat x$，此时误差$e=\lVert b-A\hat x \rVert^2$最小
 
+$Ax = b=p+e$无解，但是$A\hat x = p$有解，$\hat x = (A^TA)^{-1}A^Tb$
+
+举个栗子
+
+
+三个点(0,6),(1,0),(2,0)，显然不存在一条直线$y=Dx+C$同时过这三个点，用矩阵乘法表示就是：
+$$
+\begin{bmatrix}
+  1  & 0 \\
+  1  & 1 \\
+  1  & 2 \\
+\end{bmatrix}
+\begin{bmatrix}
+  C   \\
+  D   \\
+\end{bmatrix}=
+\begin{bmatrix}
+  6   \\
+  0   \\
+  0   \\
+\end{bmatrix}无解
+$$
+
+$$E=\lVert Ax-b \rVert^2=(C-6)^2+(C+D)^2+(C+2D)^2$$
+求E的最小值，令：
+
+$$\frac{\partial E}{\partial C}=2(C-6)+2(C+D)+2(C+2D)=0$$
+
+$$\frac{\partial E}{\partial D}=2(C+D)+4(C+2D)=0$$
+
+解得：$C=5,D=-3$，直线为$y=-3x+5$
 
