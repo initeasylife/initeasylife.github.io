@@ -1,5 +1,5 @@
 ---
-layout: cs246
+layout: post
 title:  "frequent itemsets"
 date:   2021-08-17 09:47:50 +0800
 categories: jekyll update
