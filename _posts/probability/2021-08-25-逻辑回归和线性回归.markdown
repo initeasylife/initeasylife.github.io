@@ -4,7 +4,11 @@ title:  "逻辑回归和线性回归"
 date:   2021-08-25 09:47:50 +0800
 categories: jekyll update
 ---
+
+
 <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+
+
 
 # Logistic Regression
 
