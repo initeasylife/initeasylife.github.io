@@ -1,0 +1,45 @@
+---
+layout: post
+title:  "从线性代数角度看线性回归"
+date:   2021-08-27 09:47:50 +0800
+categories: jekyll update
+---
+
+
+<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+
+
+# Linear Regression
+
+## projection onto a line
+
+向量$p$为向量 $b$ 在向量 $a$ 上的投影，$p=\hat x a$，误差为 $e=b-\hat x a$
+
+
+由$a$ 和$e$正交可得：$a \cdot(b-\hat x a)=0$，$\hat x = \frac{a^Tb}{a^Ta}$
+
+## projection onto a subspace
+
+<font color = Red>假设矩阵A的所有列都相互独立</font>，向量$p$为向量 $b$ 在 $C(A)$ 上的投影，$p=A\hat x $，误差为 $e=b-A\hat x $
+
+由于$e$和$C(A)$正交，可得e和A的每一列都正交
+$$\left[\begin{array}{c}
+-a_{1}^{\mathrm{T}}- \\
+\vdots \\
+-a_{n}^{\mathrm{T}}-
+\end{array}\right][\boldsymbol{b}-A \hat{\boldsymbol{x}}]=\left[\begin{array}{l}
+0
+\end{array}\right]$$
+即$A^T(b-A\hat x)=0 $ or $A^TA\hat x = A^Tb$
+
+
+$p=A\hat x  = A(A^TA)^{-1}A^Tb$
+
+
+$P = A(A^TA)^{-1}A^T$
+
+## Least Squares Approximations
+
+当b不在C(A)之内时，Ax=b无解，故在C(A)内找一个与b最接近的向量代替b求解，即b在C(A)上的投影$A\hat x$，此时误差$e=\lVert b-A\hat x \rVert^2$最小
+
+

@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "逻辑回归和线性回归"
+title:  "概率论角度看逻辑回归和线性回归"
 date:   2021-08-25 09:47:50 +0800
 categories: jekyll update
 ---
@@ -57,7 +57,8 @@ $$
 $$
 maximizing $\ell(\theta)$ gives the same answer as minimizing
 $$
-\frac{1}{2} \sum_{i=1}^{n}\left(y^{(i)}-\theta^{T} x^{(i)}\right)^{2} \text {, }
+\frac{1}{2} \sum_{i=1}^{n}\left(y^{(i)}-\theta^{T} x^{(i)}\right)^{2} \text { }
 $$
 
 ## Linear Algebra interpretation
+
