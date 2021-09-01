@@ -1,0 +1,17 @@
+---
+layout: post
+title:  "FM and FFM"
+date:   2021-08-21 09:47:50 +0800
+categories: jekyll update
+---
+
+
+<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+
+# FM
+## 为什么FM一顿操作把复杂度从$O(kn^2)$降低到$O(kn)$????????
+$$\sum_{i=1}^n \sum_{j=i+1}^n \langle v_i,v_j \rangle x_ix_j$$
+
+因为交叉项=(完全平方-平方项)/2
+
+$$\sum_{i=1}^n \sum_{j=i+1}^n \langle v_i,v_j \rangle=\frac{(\sum_{i=1}^nv_i)\cdot (\sum_{j=1}^nv_j)-\sum_{i=1}^nv_i \cdot v_j}{2}$$
