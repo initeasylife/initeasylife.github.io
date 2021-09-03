@@ -29,6 +29,8 @@ $$=\prod_{i=1}^n(h_\theta(x^i))^{y^i}(1-h_\theta(x^i))^{1-y^i}$$
 取对数，得$l(\theta)=\sum_{i=1}^n y^i \log h_\theta(x^i)+(1-y^i)\log (1-h_\theta(x^i))$
 
 
+ ## 逻辑回归是线性的还是非线性的？？？？？？？？？？？？？？
+
 # Linear Regression
 ## Probabilistic interpretation
 <font color = Red>假设</font>y和x的关系如下：
