@@ -7,4 +7,57 @@ categories: jekyll update
 <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
 
 # WHY L1 norm sparse
+# 为什么能避免过拟合
 
+## 从正则项的角度来看
+假设一个参数向量$w=(1,\epsilon)$，其中$\epsilon>0$且非常小，那么
+$$||w||_1 = 1+\varepsilon,\ \ ||w||_2^2 = 1+\varepsilon^2$$
+正则项作为一种惩罚，本质上就是要让每个参数都小一点
+
+如果将$w_1$减少$\delta$，则：
+$$||w-(\delta,0)||_1 = 1-\delta+\varepsilon,\ \ ||w-(\delta,0)||_2^2 = 1-2\delta+\delta^2+\varepsilon^2$$
+
+如果将$w_2$减少$\delta$，则：
+$$||w-(0,\delta)||_1 = 1-\delta+\varepsilon,\ \ ||w-(0,\delta)||_2^2 = 1-2\varepsilon\delta+\delta^2+\varepsilon^2$$
+
+可以看到，对于L2来讲，惩罚$w_1$的收益更大，但是对于L1来讲，惩罚$w_1,w_2$的收益相同。
+
+从这个角度来讲，L2正则很难将某一个参数惩罚到0，因为对一个接近0的参数进行惩罚收益很低。
+## 从梯度下降的角度看问题
+
+$$w=(w_1, w_2, \dots, w_m)$$
+$$L_1(w)=\Sigma_i |w_i|$$
+$$L_2(w)=\frac{1}{2} \Sigma_i w_i^2$$
+
+求导得：
+$$\frac{dL_1(w)}{dw} = sign(w)，sign(w) = (\frac{w_1}{|w_1|}, \frac{w_2}{|w_2|}, \dots, \frac{w_m}{|w_m|})$$
+$$\frac{dL_2(w)}{dw} = w$$
+
+L1的梯度是1或-1，在梯度下降的过程中，不管w的值是多少，L1正则都会以一个固定的步长向0移动；L2正则也会向0移动，但是步长会随着w的减小而减小
+## 结合图像看问题
+![pic](/pics/l1l2.png)
+图中红色为损失函数等高线，蓝色为正则项等高线，我们要最小化的是损失函数+正则项，最终最优的点一定是红线和蓝线的相切点，笼统地来看，L1正则的相切点更容易落在坐标轴上。
+
+## 基于约束条件的最优化
+增加了惩罚项的损失函数可以表示为：
+$$\hat {Loss}=Loss(w)+\alpha\Omega(w)$$
+这里的$\alpha$是一个固定的系数
+
+
+如果我们换一个角度来看，在最小化原始损失函数的时候增加一个约束：
+$$ \min_w Loss(w) \\ s.t. ||w||_0<=C$$
+这里的C是一个固定值
+
+
+由于该问题是一个NP问题，不易求解，所以我们用L1，L2范数来近似L0范数。
+利用拉格朗日乘数法，构造拉格朗日函数：
+$$L(w,\alpha)=Loss(w)+\alpha(||w||_1-C)$$
+$$L(w,\alpha)=Loss(w)+\alpha(||w||_2^2-C)$$
+这样一来，在一定约束条件下的最优化问题就转化成了不带约束条件的最优化问题
+
+其中$\alpha>0$，这里$\alpha$的最优解$\alpha^\ast=f(C)$，则对拉格朗日函数的最优化等价于：
+$$ \min_w Loss(w) +\alpha ^*||w||_1$$
+
+可以看出，在约束条件下对$Loss(w)$优化等价于对$\hat{Loss}$优化
+
+## 从最大后验概率估计的角度看问题
