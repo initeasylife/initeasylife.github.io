@@ -4,9 +4,21 @@ title:  "Pearson correlation coefficient"
 date:   2018-06-29 09:47:50 +0800
 categories: jekyll update
 ---
-<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
-
-
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      <!--$表示行内元素，$$表示块状元素 -->
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+<!--加载MathJax的最新文件， async表示异步加载进来 -->
+<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js">
+</script>
 # 定义
 $$Pearson = \frac{Cov(X,Y)}{\sigma_X\sigma_Y} = \frac{E[(X-\bar X)(Y-\bar Y)]}{\sigma_X\sigma_Y}=\frac{\sum(x_i-\bar x)(y_i-\bar y)}{\sqrt{\sum(x_i-\bar x)^2\sum(y_i-\bar y)^2}}$$
 
