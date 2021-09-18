@@ -11,7 +11,6 @@ categories: jekyll update
     tex2jax: {
       <!--$表示行内元素，$$表示块状元素 -->
       inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
       processEscapes: true
     },
     "HTML-CSS": { availableFonts: ["TeX"] }
@@ -26,12 +25,7 @@ categories: jekyll update
 
 ## 从正则项的角度来看
 假设一个参数向量$w=(1,\epsilon)$，其中$\epsilon>0$且非常小，那么
-
-
-$$||w||_1 = 1+\varepsilon,\ \ ||w||_2^2 = 1+\varepsilon^2$$ 
-
-
-
+$$||w||_1 = 1+\varepsilon,\ \ ||w||_2^2 = 1+\varepsilon^2$$
 正则项作为一种惩罚，本质上就是要让每个参数都小一点
 
 如果将$w_1$减少$\delta$，则：
@@ -89,7 +83,7 @@ $$L(w,\alpha)=Loss(w)+\alpha(||w||_2^2-C)$$
 
 这样一来，在一定约束条件下的最优化问题就转化成了不带约束条件的最优化问题
 
-设最优解为$ \alpha^*,w^*$，这里$\alpha $的最优解$ \alpha^\ast=f(C) $，根据KKT Condition有：
+设最优解为$ \alpha ^\ast,w ^\ast$，这里$\alpha $的最优解$ \alpha^\ast=f(C) $，根据KKT Condition有：
 
 $$\alpha ^*>=0
 \\
