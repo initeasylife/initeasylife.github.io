@@ -32,7 +32,12 @@ categories: jekyll update
 
 <font color = Red>假设矩阵A的所有列都相互独立</font>，向量$p$为向量 $b$ 在 $C(A)$ 上的投影，$p=A\hat x $，误差为 $e=b-A\hat x $
 
+
+
+
 由于$e$和$C(A)$正交，可得e和A的每一列都正交
+
+
 $$\left[\begin{array}{c}
 -a_{1}^{\mathrm{T}}- \\
 \vdots \\
