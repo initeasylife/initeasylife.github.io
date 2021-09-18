@@ -5,7 +5,7 @@ date:   2021-09-01 09:47:50 +0800
 categories: jekyll update
 mathjax: true
 ---
-<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
 # WHY L1 norm sparse
 # 为什么能避免过拟合
