@@ -4,8 +4,18 @@ title:  "正则化"
 date:   2021-09-01 09:47:50 +0800
 categories: jekyll update
 ---
-<script type="text/javascript" charset="utf-8" 
-src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,https://vincenttam.github.io/javascripts/MathJaxLocal.js,https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    packages: ['base', 'newcommand', 'configMacros']
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
 
 # WHY L1 norm sparse
 # 为什么能避免过拟合
@@ -37,6 +47,9 @@ $$\frac{dL_2(w)}{dw} = w$$
 L1的梯度是1或-1，在梯度下降的过程中，不管w的值是多少，L1正则都会以一个固定的步长向0移动；L2正则也会向0移动，但是步长会随着w的减小而减小
 ## 结合图像看问题
 ![pic](/pics/l1l2.png)
+
+
+
 图中红色为损失函数等高线，蓝色为正则项等高线，我们要最小化的是损失函数+正则项，最终最优的点一定是红线和蓝线的相切点，笼统地来看，L1正则的相切点更容易落在坐标轴上。
 
 ## 基于约束条件的最优化
