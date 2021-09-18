@@ -3,9 +3,10 @@ layout: post
 title:  "正则化"
 date:   2021-09-01 09:47:50 +0800
 categories: jekyll update
+mathjax: true
 ---
 <head>
-    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js" type="text/javascript"></script>
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
             tex2jax: {
