@@ -39,7 +39,7 @@ $$y^{(i)}=\theta^Tx^{(i)}+\epsilon^{(i)}$$
 $$\epsilon^{(i)}\sim \mathcal N(0,\sigma^2)$$
 概率密度函数为
 $$p(\epsilon ^{(i)})=\frac{1}{\sqrt{2\pi}\sigma}exp(-\frac{(\epsilon^{(i)})^2}{2\sigma^2})$$
-则$y^{(i)}|x^{(i)};\theta \sim \mathcal N (\theta^Tx{(i)},\sigma^2)$
+则$y^{(i)}|x^{(i)};\theta \sim \mathcal N (\theta^Tx^{(i)},\sigma^2)$
 
 $$p(y^{(i)}|x^{(i)};\theta)=\frac{1}{\sqrt{2\pi}\sigma}exp(-\frac{(y^{(i)}-\theta^Tx^{(i)})^2}{2\sigma^2})$$
 

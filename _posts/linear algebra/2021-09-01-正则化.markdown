@@ -41,7 +41,7 @@ L1的梯度是1或-1，在梯度下降的过程中，不管w的值是多少，L1
 ## 基于约束条件的最优化
 增加了惩罚项的损失函数可以表示为：
 $$\hat {Loss}=Loss(w)+\alpha\Omega(w)$$
-这里的$\alpha$是一个固定的系数
+这里的$\alpha$是一个固定的系数，是需要我们调整的超参
 
 
 如果我们换一个角度来看，在最小化原始损失函数的时候增加一个约束：
@@ -50,14 +50,50 @@ $$ \min_w Loss(w) \\ s.t. ||w||_0<=C$$
 
 
 由于该问题是一个NP问题，不易求解，所以我们用L1，L2范数来近似L0范数。
-利用拉格朗日乘数法，构造拉格朗日函数：
+问题转化成了带约束条件的凸优化问题，构造拉格朗日函数：
 $$L(w,\alpha)=Loss(w)+\alpha(||w||_1-C)$$
 $$L(w,\alpha)=Loss(w)+\alpha(||w||_2^2-C)$$
 这样一来，在一定约束条件下的最优化问题就转化成了不带约束条件的最优化问题
 
-其中$\alpha>0$，这里$\alpha$的最优解$\alpha^\ast=f(C)$，则对拉格朗日函数的最优化等价于：
+设最优解为$\alpha^*,w^*$，这里$\alpha$的最优解$\alpha^\ast=f(C)$，根据KKT Condition有：
+
+$$\alpha ^*>=0
+\\
+\nabla_w(w^*,\alpha^*)=0
+$$
+则对拉格朗日函数的最优化等价于：
 $$ \min_w Loss(w) +\alpha ^*||w||_1$$
 
 可以看出，在约束条件下对$Loss(w)$优化等价于对$\hat{Loss}$优化
 
 ## 从最大后验概率估计的角度看问题
+$$P(w|Data)=\frac{P(Data|w)P(w)}{P(Data)}\propto P(Data|w)P(w)
+\\
+logP(w|Data)\propto logP(Data|w)+logP(w)$$
+
+以线性回归为例，假设：
+$$y=w^Tx+\epsilon
+\\
+\epsilon \sim \mathcal N(0,\sigma^2)
+\\
+y|x;\theta\sim\mathcal N(w^Tx,\sigma^2)
+$$
+则：
+$$l(w)=\sum_i^n log (\frac{1}{\sqrt{2\pi}\sigma}exp(-\frac{(y_i-w^Tx_i)^2}{2\sigma^2}))
+\\
+=n log (\frac{1}{\sqrt{2\pi}\sigma})-\frac{1}{2\sigma^2}\sum_i^n(y_i-w^Tx_i)^2
+$$
+假设$w\sim \mathcal N(0,\sigma^2) $，则有：
+$$logP(w)=log\prod_jP(w_j)=\sum_j log(\frac{1}{\sqrt{2\pi}\sigma}exp(-\frac{w_j^2}{2\sigma^2}))
+\\
+=\frac{1}{\sqrt{2\pi}\sigma}-\frac{1}{2\sigma^2}\sum_j w_j^2
+$$
+假设w服从期望是0，参数为$\alpha$的拉普拉斯分布，则有：
+$$logP(w)=log\prod_jP(w_j)=\sum_j\frac{1}{2\alpha}exp(-\frac{|w_j|}{\alpha})
+\\
+=\sum_j \frac{1}{2\alpha}-\frac{1}{\alpha}\sum_j|w_j|
+$$
+L1正则化可通过假设权重w的先验分布为拉普拉斯分布，由最大后验概率估计导出；
+L2正则化可通过假设权重w的先验分布为高斯分布，由最大后验概率估计导出。
+
+
