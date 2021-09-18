@@ -4,8 +4,7 @@ title:  "SVM数学详解"
 date:   2018-06-27 09:47:50 +0800
 categories: jekyll update
 ---
-
-<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 前方数学公式高能预警(╯‵□′)╯︵┻━┻
 
 
