@@ -47,8 +47,15 @@ wd.path = "/home/xxx/genedata/460"
 setwd(wd.path)
 paste("path : ",getwd())
 
-# 460
+# read from filtered_feature_bc_matrix
 dataP460 <- Read10X(data.dir = "/home/xxx/genedata/data/P460/lhx/filtered_feature_bc_matrix")
+# read from gz file
+# read.table(gzfile("/home/xxx/genedata/cellphoneDB/GSE89567/GSE89567_IDH_A_processed_data.txt.gz"))
+dim(dataP460)
+loc<-which(rowSums(dataP460)==0)
+dataP460<-dataP460[-loc,]
+dim(dataP460)
+pbmcP460 <- CreateSeuratObject(counts = dataP460, project = "P460", min.cells = 3, min.features = 200)
 pbmcP460[["percent.mt"]] <- PercentageFeatureSet(pbmcP460, pattern = "^MT-")
 ```
 质检

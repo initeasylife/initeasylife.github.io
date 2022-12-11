@@ -1,0 +1,300 @@
+---
+title: "P453"
+author: "cyd"
+date: "2022-12-06"
+output: html_document
+---
+
+## init
+
+```{r}
+#library
+library(dplyr)
+library(stringr)
+library(Seurat)
+library(patchwork)
+library(clustree)
+library(harmony)
+library(devtools)
+library(DoubletFinder)
+library(ROCR)
+library(ggsci)
+library(ggplot2)
+#init
+rm(list=ls())
+options(stringsAsFactors = F)
+
+#values
+
+#args
+wd.path = "/home/xxx/genedata/PCP_data/453/"
+
+setwd(wd.path)
+paste("path : ",getwd())
+```
+
+## read from filtered_feature_bc_matrix
+
+```{r}
+dataP453 <- Read10X(data.dir = paste(wd.path , "453filtered_feature_bc_matrix",sep=""))
+dataP453 = dataP453$`Gene Expression`
+```
+
+## filter the cell which all gene expression is zero
+
+```{r}
+dim(dataP453)
+loc<-which(rowSums(dataP453)==0)
+dataP453<-dataP453[-loc,]
+dim(dataP453)
+```
+
+## create seurat object
+
+params:min.cell=3,min.features=200
+
+percent.mt：线粒体占比，线粒体高代表细胞快死了
+
+```{r}
+pbmcP453 <- CreateSeuratObject(counts = dataP453, project = "P453", min.cells = 3, min.features = 200)
+pbmcP453[["percent.mt"]] <- PercentageFeatureSet(pbmcP453, pattern = "^MT-")
+```
+
+## visualize QC metrics and filter cell
+
+nFeature_RNA is the number of genes detected in each cell.
+
+nCount_RNA is the total number of molecules detected within a cell.
+
+Low nFeature_RNA for a cell indicates that it may be dead/dying or an empty droplet.
+
+High nCount_RNA and/or nFeature_RNA indicates that the "cell" may in fact be a doublet (or multiplet).
+
+In combination with %mitochondrial reads, removing outliers from these groups removes most doublets/dead cells/empty droplets, hence why filtering is a common pre-processing step.
+
+```{r}
+VlnPlot(pbmcP453, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
+VlnPlot(pbmcP453,features = c("nFeature_RNA"))
+VlnPlot(pbmcP453,features = c("nCount_RNA"))
+VlnPlot(pbmcP453,features = c("percent.mt"))
+```
+
+```{r}
+dim(pbmcP453)
+pbmcP453 <- subset(pbmcP453, subset = nFeature_RNA < 2000 & nFeature_RNA > 300 & nCount_RNA< 5000 & percent.mt<25 )
+dim(pbmcP453)
+```
+
+## normalize data
+
+```{r}
+pbmcP453 = NormalizeData(pbmcP453, normalization.method = "LogNormalize", scale.factor = 10000)
+```
+
+## find high variable features
+
+```{r}
+pbmcP453 <- FindVariableFeatures(pbmcP453, selection.method = "vst", nfeatures = 2000)
+```
+
+## reduce dims and cluster cells
+
+```{r}
+#scale data
+all.genes <- rownames(pbmcP453)
+pbmcP453 <- ScaleData(pbmcP453, features = all.genes)
+
+pbmcP453 <- RunPCA(pbmcP453, features = VariableFeatures(object = pbmcP453))
+
+#find neighbors
+pbmcP453 <- FindNeighbors(pbmcP453, dims = 1:20,reduction = 'pca')
+pbmcP453 <- FindClusters(pbmcP453, resolution = c(seq(.1,1,.03)))
+#cluster tree
+clustree(pbmcP453@meta.data, prefix = "RNA_snn_res.")
+
+
+
+```
+
+## save rds
+
+```{r}
+saveRDS(pbmcP453,file="453_seurat.rds")
+```
+
+## convert to cellphonedb input file
+
+counts.txt (Gene \* Cell expression matrix)
+
+meta.txt (Cell and Celltype)
+
+```{r}
+pbmcP453 = readRDS(file="453_seurat.rds")
+t1 = colnames(pbmcP453)
+t1 = gsub("-",".",t1)
+t2 = pbmcP453@meta.data[["RNA_snn_res.1"]]
+meta = data.frame(Cell=t1,cell_type=t2)
+meta$cell_type = paste("cluster",meta$cell_type,sep="_")
+write.table(meta,file="meta_453.txt",sep="\t",row.names=FALSE,quote=FALSE)
+```
+
+```{r}
+library(dplyr)
+library(stringr)
+## convert gene_name to gene_id
+counts=data.frame(pbmcP453@assays[["RNA"]]@data)
+ref = read.table("/home/xxx/genedata/cellphoneDB/00be7d10-fd2d-4483-a712-72f24846610f.rna_seq.augmented_star_gene_counts.tsv",sep ="\t",header=TRUE)
+gene_name = rownames(counts)
+rownames(counts)=NULL
+counts = cbind(gene_name,counts)
+ref=ref[c('gene_id','gene_name')]
+r = merge(ref,counts,by='gene_name',all.y=TRUE)
+r=r[!is.na(r$gene_id),]
+r=r[,-1]
+
+
+gene_id = str_split(r$gene_id,"\\.",simplify = T)[,1]
+r$gene_id=gene_id
+write.table(r,file="counts_453.txt",quote=FALSE,sep="\t",row.names=FALSE)
+```
+
+```{shell}
+cellphonedb method statistical_analysis meta_453.txt counts_453.txt 
+```
+
+## SingleR
+
+```{r}
+
+library(ggplot2)
+library(SingleR)
+library(Seurat)
+refdata <- HumanPrimaryCellAtlasData()
+scRNA = readRDS(file=paste(wd.path,"453_seurat.rds",sep=""))
+
+```
+
+### define the big resolution by label.fine
+
+```{r}
+testdata <- GetAssayData(scRNA, slot="data")
+clusters_big <- scRNA@meta.data$RNA_snn_res.1
+cellpred <- SingleR(test = testdata, ref = refdata, labels = refdata$label.fine, method = "cluster", clusters = clusters_big)
+
+celltype = data.frame(ClusterID=rownames(cellpred), celltype_res.1=cellpred$labels, stringsAsFactors = F)
+
+scRNA@meta.data$res.1.celltype = "NA"
+for(i in 1:nrow(celltype)){
+  scRNA@meta.data[which(scRNA@meta.data$seurat_clusters == celltype$ClusterID[i]),'res.1.celltype'] <- celltype$celltype[i]}
+celltype_count = table(scRNA@meta.data$RNA_snn_res.1)
+celltype['count']=celltype_count
+write.csv(celltype,paste(wd.path,"celltype_res_1.csv",seq=""),row.names = FALSE)
+```
+
+### define the small resolution by label.main
+
+```{r}
+testdata <- GetAssayData(scRNA, slot="data")
+clusters_small <- scRNA@meta.data$RNA_snn_res.0.22
+cellpred <- SingleR(test = testdata, ref = refdata, labels = refdata$label.main, method = "cluster", clusters = clusters_small)
+
+celltype = data.frame(ClusterID=rownames(cellpred), celltype_res.0.22=cellpred$labels, stringsAsFactors = F)
+
+scRNA@meta.data$res.0.22.celltype = "NA"
+for(i in 1:nrow(celltype)){
+  scRNA@meta.data[which(scRNA@meta.data$seurat_clusters == celltype$ClusterID[i]),'res.0.22.celltype'] <- celltype$celltype[i]}
+celltype_count = table(scRNA@meta.data$RNA_snn_res.0.22)
+celltype['count']=celltype_count
+write.csv(celltype,paste(wd.path,"celltype_res_0_22.csv",seq=""),row.names = FALSE)
+```
+
+## save RDS
+
+```{r}
+saveRDS(scRNA,file=paste(wd.path,"453_singleR.rds",sep=""))
+```
+
+## find markers
+
+res=0.22
+
+```{r}
+# change active.ident
+scRNA = SetIdent(scRNA,value=scRNA@meta.data$RNA_snn_res.0.22)
+pbmc.markers.res.0.22 <- FindAllMarkers(scRNA, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
+pbmc.markers.res.0.22 %>%
+  group_by(cluster) %>%
+  slice_max(n = 2, order_by = avg_log2FC)
+write.csv(pbmc.markers.res.0.22,paste(wd.path,"pbmc.markers.res.0.22.csv"),row.names = FALSE)
+top30 = pbmc.markers.res.0.22 %>% group_by(cluster) %>% top_n(n = 30, wt = avg_log2FC)
+plot1 = DoHeatmap(scRNA, features = top30$gene) + NoLegend()+scale_color_npg()
+pdf(paste(wd.path,"top30_res_0.22.pdf",sep=""),width = 20, height= 50)
+print(plot1)
+dev.off()
+```
+
+res=1
+
+```{r}
+# change active.ident
+scRNA = SetIdent(scRNA,value=scRNA@meta.data$RNA_snn_res.1)
+pbmc.markers.res.1 <- FindAllMarkers(scRNA, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
+pbmc.markers.res.1 %>%
+  group_by(cluster) %>%
+  slice_max(n = 2, order_by = avg_log2FC)
+write.csv(pbmc.markers.res.1,paste(wd.path,"pbmc.markers.res.1.csv"),row.names = FALSE)
+top30 = pbmc.markers.res.1 %>% group_by(cluster) %>% top_n(n = 30, wt = avg_log2FC)
+plot1 = DoHeatmap(scRNA, features = top30$gene) + NoLegend()+scale_color_npg()
+pdf(paste(wd.path,"top30_res_1.pdf",sep=""),width = 20, height= 50)
+print(plot1)
+dev.off()
+```
+
+## plot
+
+```{r}
+scRNA <- RunUMAP(scRNA, dims = 1:20,reduction='pca')
+p1 = DimPlot(scRNA, reduction = "umap",label=TRUE,pt.size=0.5,group.by = "RNA_snn_res.0.22")
+pdf(paste(wd.path,"umap_RNA_snn_res.0.22.pdf",sep=""),width = 10, height= 10)
+print(p1)
+dev.off()
+
+p2 = DimPlot(scRNA, reduction = "umap",label=TRUE,pt.size=0.5,group.by = "RNA_snn_res.1")
+pdf(paste(wd.path,"umap_RNA_snn_res.1.pdf",sep=""),width = 10, height= 10)
+print(p2)
+dev.off()
+
+p3 = DimPlot(scRNA, reduction = "umap",label=TRUE,pt.size=0.5,group.by = "res.0.22.celltype")
+pdf(paste(wd.path,"umap_res.0.22.celltype.pdf",sep=""),width = 10, height= 10)
+print(p3)
+dev.off()
+
+p4 = DimPlot(scRNA, reduction = "umap",label=TRUE,pt.size=0.5,group.by = "res.1.celltype")
+pdf(paste(wd.path,"umap_res.1.celltype.pdf",sep=""),width = 10, height= 10)
+print(p4)
+dev.off()
+
+
+scRNA <- RunTSNE(scRNA, dims = 1:20,reduction='pca')
+p1 = DimPlot(scRNA, reduction = "tsne",label=TRUE,pt.size=0.5,group.by = "RNA_snn_res.0.22")
+pdf(paste(wd.path,"tsne_RNA_snn_res.0.22.pdf",sep=""),width = 10, height= 10)
+print(p1)
+dev.off()
+
+p2 = DimPlot(scRNA, reduction = "tsne",label=TRUE,pt.size=0.5,group.by = "RNA_snn_res.1")
+pdf(paste(wd.path,"tsne_RNA_snn_res.1.pdf",sep=""),width = 10, height= 10)
+print(p2)
+dev.off()
+
+p3 = DimPlot(scRNA, reduction = "tsne",label=TRUE,pt.size=0.5,group.by = "res.0.22.celltype")
+pdf(paste(wd.path,"tsne_res.0.22.celltype.pdf",sep=""),width = 10, height= 10)
+print(p3)
+dev.off()
+
+p4 = DimPlot(scRNA, reduction = "tsne",label=TRUE,pt.size=0.5,group.by = "res.1.celltype")
+pdf(paste(wd.path,"tsne_res.1.celltype.pdf",sep=""),width = 10, height= 10)
+print(p4)
+dev.off()
+```
+
+## 
