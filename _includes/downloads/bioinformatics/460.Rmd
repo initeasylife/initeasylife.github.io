@@ -1,0 +1,172 @@
+---
+title: "P460"
+author: "cyd"
+date: "2022-12-06"
+output: html_document
+---
+
+## init
+
+```{r}
+#library
+library(dplyr)
+library(stringr)
+library(Seurat)
+library(patchwork)
+library(clustree)
+library(harmony)
+library(devtools)
+library(DoubletFinder)
+library(ROCR)
+library(ggsci)
+library(ggplot2)
+#init
+rm(list=ls())
+options(stringsAsFactors = F)
+
+#values
+
+#args
+wd.path = "/home/xxx/genedata/PCP data/460/"
+
+setwd(wd.path)
+paste("path : ",getwd())
+```
+
+## read from filtered_feature_bc_matrix
+
+```{r}
+dataP460 <- Read10X(data.dir = paste(wd.path , "460filtered_feature_bc_matrix",sep=""))
+```
+
+## filter the cell which all gene expression is zero
+
+```{r}
+dim(dataP460)
+loc<-which(rowSums(dataP460)==0)
+dataP460<-dataP460[-loc,]
+dim(dataP460)
+```
+
+## create seurat object
+
+params:min.cell=3,min.features=200
+
+percent.mt：线粒体占比，线粒体高代表细胞快死了
+
+```{r}
+pbmcP460 <- CreateSeuratObject(counts = dataP460, project = "P460", min.cells = 3, min.features = 200)
+pbmcP460[["percent.mt"]] <- PercentageFeatureSet(pbmcP460, pattern = "^MT-")
+```
+
+## visualize QC metrics and filter cell
+
+nFeature_RNA is the number of genes detected in each cell.
+
+nCount_RNA is the total number of molecules detected within a cell.
+
+Low nFeature_RNA for a cell indicates that it may be dead/dying or an empty droplet.
+
+High nCount_RNA and/or nFeature_RNA indicates that the "cell" may in fact be a doublet (or multiplet).
+
+In combination with %mitochondrial reads, removing outliers from these groups removes most doublets/dead cells/empty droplets, hence why filtering is a common pre-processing step.
+
+```{r}
+VlnPlot(pbmcP460, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
+VlnPlot(pbmcP460,features = c("nFeature_RNA"),y.max=1000)
+VlnPlot(pbmcP460,features = c("nCount_RNA"),y.max=10000)
+VlnPlot(pbmcP460,features = c("percent.mt"),y.max=20)
+```
+
+```{r}
+dim(pbmcP460)
+pbmcP460 <- subset(pbmcP460, subset = nFeature_RNA < 5000 & nFeature_RNA > 300 & nCount_RNA< 10000 & percent.mt<20 )
+dim(pbmcP460)
+```
+
+## normalize data
+
+```{r}
+pbmcP460 = NormalizeData(pbmcP460, normalization.method = "LogNormalize", scale.factor = 10000)
+```
+
+## find high variable features
+
+```{r}
+pbmcP460 <- FindVariableFeatures(pbmcP460, selection.method = "vst", nfeatures = 2000)
+```
+
+## reduce dims and cluster cells
+
+```{r}
+#scale data
+all.genes <- rownames(pbmcP460)
+pbmcP460 <- ScaleData(pbmcP460, features = all.genes)
+
+pbmcP460 <- RunPCA(pbmcP460, features = VariableFeatures(object = pbmcP460))
+
+#find neighbors
+pbmcP460 <- FindNeighbors(pbmcP460, dims = 1:20,reduction = 'pca')
+pbmcP460 <- FindClusters(pbmcP460, resolution = c(seq(.1,1,.03)))
+#cluster tree
+clustree(pbmcP460@meta.data, prefix = "RNA_snn_res.")
+
+
+
+```
+
+## plot
+
+```{r}
+pbmcP460 <- RunUMAP(pbmcP460, dims = 1:20,reduction='pca')
+DimPlot(pbmcP460, reduction = "umap",label=TRUE,pt.size=0.5,group.by = "RNA_snn_res.0.31")
+
+pbmcP460 <- RunTSNE(pbmcP460, dims = 1:20,reduction='pca')
+DimPlot(pbmcP460, reduction = "tsne",label=TRUE,pt.size=1.5,group.by = "RNA_snn_res.0.31")
+```
+
+## save rds
+
+```{r}
+saveRDS(pbmcP460,file="460_seurat.rds")
+```
+
+## convert to cellphonedb input file
+
+counts.txt (Gene \* Cell expression matrix)
+
+meta.txt (Cell and Celltype)
+
+```{r}
+pbmcP460 = readRDS(file="460_seurat.rds")
+t1 = colnames(pbmcP460)
+t1 = gsub("-",".",t1)
+t2 = pbmcP460@meta.data[["RNA_snn_res.0.31"]]
+meta = data.frame(Cell=t1,cell_type=t2)
+meta$cell_type = paste("cluster",meta$cell_type,sep="_")
+write.table(meta,file=paste(wd.path,"meta_0_31_460.txt",sep=""),sep="\t",row.names=FALSE,quote=FALSE)
+```
+
+```{r}
+library(dplyr)
+library(stringr)
+## convert gene_name to gene_id
+counts=data.frame(pbmcP460@assays[["RNA"]]@data)
+ref = read.table("/home/xxx/genedata/cellphoneDB/00be7d10-fd2d-4483-a712-72f24846610f.rna_seq.augmented_star_gene_counts.tsv",sep ="\t",header=TRUE)
+gene_name = rownames(counts)
+rownames(counts)=NULL
+counts = cbind(gene_name,counts)
+ref=ref[c('gene_id','gene_name')]
+r = merge(ref,counts,by='gene_name',all.y=TRUE)
+r=r[!is.na(r$gene_id),]
+r=r[,-1]
+
+
+gene_id = str_split(r$gene_id,"\\.",simplify = T)[,1]
+r$gene_id=gene_id
+write.table(r,file=paste(wd.path,"counts_460.txt",sep=""),quote=FALSE,sep="\t",row.names=FALSE)
+```
+
+```{shell}
+cellphonedb method statistical_analysis meta_460.txt counts_460.txt 
+```

@@ -84,6 +84,13 @@ def check_site(root, baseurl):
         for url in json.loads(legacy_file.read_text()):
             if not (root / unquote(url).lstrip('/')).is_file():
                 errors.append(f'Missing legacy article URL: {url}')
+    # R Markdown starts with YAML that Jekyll would otherwise remove as front matter.
+    # The download templates must reproduce the original files byte for byte.
+    download_sources = Path('_includes/downloads')
+    for original in download_sources.rglob('*.Rmd'):
+        output = root / 'assets/downloads' / original.relative_to(download_sources)
+        if not output.is_file() or output.read_bytes() != original.read_bytes():
+            errors.append(f'Download differs from original R Markdown: {output}')
     if errors:
         raise SystemExit('\n'.join(errors))
     print(f'PASS: {len(pages)} HTML pages, {len(indexed)} indexed documents, {len(topics)} topics; all internal links and legacy URLs resolve.')

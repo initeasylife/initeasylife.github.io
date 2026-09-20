@@ -33,7 +33,7 @@ python3 scripts/check_site.py .build
 
 - 有日期的笔记放入 `_posts/<topic>/YYYY-MM-DD-title.md`。
 - 没有原始日期的摘录放入 `_notes/<topic>/title.md`。使用 [Jekyll collections](https://jekyllrb.com/docs/collections/) 输出，不补写日期。
-- R Markdown 原文件存放在 `assets/downloads/bioinformatics/`，对应文章提供下载和静态代码阅读；网站不执行 R 代码。
+- R Markdown 原文件存放在 `_includes/downloads/bioinformatics/`，通过 `assets/downloads/bioinformatics/` 中的下载模板原样输出，避免 Jekyll 把原文件的 YAML 头部当作页面元数据而删除。对应文章提供下载和静态代码阅读；网站不执行 R 代码。
 - 未完成的提纲使用 `status: seed`，在列表和正文中显示「待完善」。
 
 新增文章示例：
