@@ -1,0 +1,36 @@
+- id: recommendation
+  name: 推荐系统
+  english: Recommendation
+  description: 从协同过滤到特征交叉，理解人与兴趣的连接。
+  icon: network
+  color: teal
+- id: machine-learning
+  name: 机器学习
+  english: Machine Learning
+  description: 拆解经典算法，记录模型背后的直觉与推导。
+  icon: spark
+  color: blue
+- id: mathematics
+  name: 数学基础
+  english: Mathematics
+  description: 线性代数、最优化与正则化，回到问题的本质。
+  icon: function
+  color: amber
+- id: statistics
+  name: 概率统计
+  english: Probability & Statistics
+  description: 从概率的视角，理解数据、关系与不确定性。
+  icon: chart
+  color: purple
+- id: papers
+  name: 论文阅读
+  english: Paper Notes
+  description: 关于向量召回与双塔模型的阅读摘录和思考。
+  icon: book
+  color: coral
+- id: bioinformatics
+  name: 生物信息
+  english: Bioinformatics
+  description: 单细胞分析、细胞通信与 R 语言实践记录。
+  icon: dna
+  color: green

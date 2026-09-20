@@ -1,0 +1,118 @@
+---
+layout: default
+title: 知识概览
+nav: home
+---
+{% assign documents = site.posts | concat: site.notes %}
+<div class="page-content home-page">
+  <section class="hero">
+    <div class="hero-copy">
+      <div class="eyebrow">
+        <span></span>
+        THE LEARNING NEVER STOPS
+      </div>
+      <h1>
+        保持好奇，
+        <br>
+        让知识
+        <span class="hero-accent">生长。</span>
+      </h1>
+      <p>
+        这里是一座慢慢生长的知识花园。
+        <br>
+        记录算法的推导、论文的灵感，以及动手实践的点滴。
+      </p>
+      <a class="button button-primary" href="{{ '/library/' | relative_url }}">
+        开始探索
+        {% include icon.html name='arrow' -%}
+      </a>
+      <a class="hero-about" href="{{ '/about/' | relative_url }}">关于这座花园 ↗</a>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="art-grid"></div>
+      <div class="orbit orbit-one"></div>
+      <div class="orbit orbit-two"></div>
+      <div class="art-axis axis-x"></div>
+      <div class="art-axis axis-y"></div>
+      <span class="art-node node-one"></span>
+      <span class="art-node node-two"></span>
+      <span class="art-node node-three"></span>
+      <span class="art-symbol symbol-one">∑</span>
+      <span class="art-symbol symbol-two">ƒ(x)</span>
+      <span class="art-symbol symbol-three">∞</span>
+      <div class="art-center">
+        <span>Learn.</span>
+        <span>Connect.</span>
+        <em>Grow.</em>
+      </div>
+      <span class="art-caption">IDEAS ARE BETTER CONNECTED</span>
+    </div>
+    <div class="hero-stats">
+      <span>
+        <strong>{{ documents.size }}</strong>
+        篇文档
+      </span>
+      <i></i>
+      <span>
+        <strong>{{ site.data.topics.size | prepend: '0' }}</strong>
+        个知识专题
+      </span>
+      <i></i>
+      <span class="hero-stat-note">一点一滴，积累成林</span>
+    </div>
+  </section>
+  <section class="topics-section" aria-labelledby="topics-title">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">EXPLORE BY TOPIC</span>
+        <h2 id="topics-title">沿着兴趣，找到方向</h2>
+      </div>
+      <a class="text-link" href="{{ '/library/' | relative_url }}">
+        浏览全部
+        {% include icon.html name='arrow' %}
+      </a>
+    </div>
+    <div class="topic-grid">
+      {% for topic in site.data.topics -%}
+        {%- assign topic_docs = documents | where: 'topic', topic.id -%}
+        <a class="topic-card {{ topic.color }}" href="{{ '/library/' | relative_url }}?topic={{ topic.id }}">
+          <div class="topic-card-top">
+            <span class="topic-icon">{% include icon.html name=topic.icon %}</span>
+            <span class="topic-card-count">
+              {{ topic_docs.size }} 篇
+              {% include icon.html name='diagonal' %}
+            </span>
+          </div>
+          <h3>{{ topic.name }}</h3>
+          <span class="topic-english">{{ topic.english }}</span>
+          <p>{{ topic.description }}</p>
+        </a>
+      {%- endfor %}
+    </div>
+  </section>
+  <section class="recent-section" aria-labelledby="recent-title">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">FROM THE NOTEBOOK</span>
+        <h2 id="recent-title">最近的记录</h2>
+      </div>
+      <a class="text-link" href="{{ '/archive/' | relative_url }}">
+        查看归档
+        {% include icon.html name='arrow' %}
+      </a>
+    </div>
+    <div class="document-list">
+      {% for doc in site.posts limit: 5 -%}
+        {%- include document-row.html doc=doc -%}
+      {%- endfor %}
+    </div>
+  </section>
+  <div class="closing-note">
+    <span>“</span>
+    <p>
+      学而不思则罔，思而不学则殆。
+      <small>留下思考的痕迹，让每一次学习都有迹可循。</small>
+    </p>
+    <span class="closing-spark">✳</span>
+  </div>
+</div>

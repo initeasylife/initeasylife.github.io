@@ -1,0 +1,31 @@
+<svg
+  class="icon"
+  width="20"
+  height="20"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.65"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+>
+  {% case include.name %}
+  {% when 'search' %}<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/>
+  {% when 'grid' %}<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
+  {% when 'network' %}<circle cx="5" cy="6" r="2.5"/><circle cx="19" cy="6" r="2.5"/><circle cx="12" cy="19" r="2.5"/><path d="M7.5 6h9M6.2 8.4l4.5 8.3m6.9-8.3-4.4 8.3"/>
+  {% when 'spark' %}<path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3Z"/>
+  {% when 'function' %}<path d="M16 4c-4-2-5 2-5 5l-1 7c-.4 4-3 5-5 3m2-9h10m-1 5 5 5m0-5-5 5"/>
+  {% when 'chart' %}<path d="M3 19h18M5 15c4 0 3-11 7-11s3 11 7 11M12 4v15"/>
+  {% when 'book' %}<path d="M12 5v15M3 4c4-1 6-1 9 1 3-2 5-2 9-1v15c-4-1-6-1-9 1-3-2-5-2-9-1V4Z"/>
+  {% when 'dna' %}<path d="M7 3c0 9 10 9 10 18M17 3c0 9-10 9-10 18M7.5 5h9m-7 4h5m-5 6h5m-7 4h9"/>
+  {% when 'arrow' %}<path d="M4 12h16m-6-6 6 6-6 6"/>
+  {% when 'diagonal' %}<path d="M6 18 18 6M6 6h12v12"/>
+  {% when 'file' %}<path d="M14 3H5v18h14V8l-5-5Zm0 0v5h5M8 12h8m-8 4h5"/>
+  {% when 'archive' %}<rect x="3" y="3" width="18" height="5" rx="1"/><path d="M5 8v13h14V8m-10 4h6"/>
+  {% when 'info' %}<circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v.1"/>
+  {% when 'github' %}<path d="M9 20c-4 1-4-2-6-2m12 4v-4c0-1-.3-1.5-1-2 3-.3 6-1.5 6-6 0-1.5-.5-2.5-1.5-3.5.2-1 .2-2-.3-3.5 0 0-1.3-.2-4 1.5a14 14 0 0 0-5 0C6.5 2.8 5.2 3 5.2 3c-.5 1.5-.5 2.5-.3 3.5C4 7.5 3.5 8.5 3.5 10c0 4.5 3 5.7 6 6-.7.5-1 1-1 2v4"/>
+  {% when 'rss' %}<path d="M4 4a16 16 0 0 1 16 16M4 11a9 9 0 0 1 9 9"/><circle cx="5" cy="19" r="1"/>
+  {% when 'menu' %}<path d="M4 6h16M4 12h16M4 18h16"/>
+  {% endcase %}
+</svg>

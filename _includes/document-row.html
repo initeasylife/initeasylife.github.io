@@ -1,0 +1,37 @@
+{% assign doc = include.doc -%}
+{%- assign topic = site.data.topics | where: 'id', doc.topic | first %}
+<article
+  class="document-row"
+  {% if include.filterable %}
+    data-document data-topic="{{ doc.topic }}" data-title="{{ doc.title | escape }}"
+    data-search="{{ doc.title | append: ' ' | append: doc.description | append: ' ' | append: topic.name | escape }} {{ doc.tags | join: ' ' | escape }}"
+  {% endif %}
+>
+  <span class="document-icon {{ topic.color }}">{% include icon.html name=topic.icon %}</span>
+  <div class="document-main">
+    <div class="document-meta">
+      <span class="category-label {{ topic.color }}">{{ topic.name }}</span>
+      <span>{{ doc.kind }}</span>
+      {%- if doc.status == 'seed' -%}
+        <span class="seed-label">待完善</span>
+      {%- endif %}
+    </div>
+    <h3>
+      <a href="{{ doc.url | relative_url }}">{{ doc.title }}</a>
+    </h3>
+    <p>{{ doc.description }}</p>
+    <div class="document-tags">
+      {% for tag in doc.tags limit: 3 -%}
+        <span># {{ tag }}</span>
+      {%- endfor %}
+    </div>
+  </div>
+  <div class="document-end">
+    {% if doc.date and doc.undated != true %}
+      <time datetime="{{ doc.date | date_to_xmlschema }}">{{ doc.date | date: '%Y.%m.%d' }}</time>
+    {% else %}
+      <span class="undated-label">未标注日期</span>
+    {% endif %}
+    {%- include icon.html name='arrow' %}
+  </div>
+</article>

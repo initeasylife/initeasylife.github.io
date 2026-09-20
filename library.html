@@ -1,0 +1,49 @@
+---
+layout: default
+title: 全部文档
+nav: library
+permalink: /library/
+---
+{% assign documents = site.posts | concat: site.notes %}
+<div class="page-content" data-library>
+  <div class="page-heading">
+    <span class="eyebrow">THE KNOWLEDGE LIBRARY</span>
+    <h1>每一篇记录，都是一步向前。</h1>
+    <p>在 {{ documents.size }} 篇文档中，寻找此刻感兴趣的问题。</p>
+  </div>
+  <form class="library-search" role="search">
+    <label class="sr-only" for="library-search">搜索标题、摘要和标签</label>
+    {% include icon.html name='search' -%}
+    <input id="library-search" type="search" name="q" placeholder="搜索标题、摘要和标签…" autocomplete="off">
+    <button type="button" class="clear-search" hidden>清空</button>
+  </form>
+  <div class="filter-tabs" aria-label="选择分类">
+    <button class="filter-tab is-active" type="button" data-filter="all" aria-pressed="true">
+      全部
+      <span>{{ documents.size }}</span>
+    </button>
+    {%- for topic in site.data.topics -%}
+      {%- assign topic_docs = documents | where: 'topic', topic.id -%}
+      <button class="filter-tab" type="button" data-filter="{{ topic.id }}" aria-pressed="false">
+        {{ topic.name }}
+        <span>{{ topic_docs.size }}</span>
+      </button>
+    {%- endfor %}
+  </div>
+  <div class="results-heading">
+    <h2 data-library-title>全部文档</h2>
+    <span role="status" aria-live="polite" data-results-count>{{ documents.size }} 篇文档</span>
+  </div>
+  <noscript><p class="notice">当前展示全部文档。启用 JavaScript 后可使用搜索和分类筛选。</p></noscript>
+  <div class="document-list">
+    {% for doc in documents -%}
+      {%- include document-row.html doc=doc filterable=true -%}
+    {%- endfor %}
+  </div>
+  <div class="empty-state" hidden>
+    <span>∅</span>
+    <h2>暂时没有找到这篇笔记</h2>
+    <p>试试更短的关键词，或者探索其他专题。</p>
+    <button type="button" class="button button-primary" data-reset-filters>查看全部文档</button>
+  </div>
+</div>

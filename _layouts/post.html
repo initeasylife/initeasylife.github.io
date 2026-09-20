@@ -1,0 +1,72 @@
+---
+layout: default
+---
+{% assign topic = site.data.topics | where: 'id', page.topic | first %}
+<div class="post-page">
+  <div class="post-breadcrumb">
+    <a href="{{ '/library/' | relative_url }}">全部文档</a>
+    <span>/</span>
+    <a href="{{ '/library/' | relative_url }}?topic={{ page.topic }}">{{ topic.name }}</a>
+  </div>
+  <div class="post-grid">
+    <article class="post-article">
+      <header class="post-header">
+        <div class="document-meta">
+          <span class="category-label {{ topic.color }}">{{ topic.name }}</span>
+          <span>{{ page.kind }}</span>
+        </div>
+        <h1>{{ page.title }}</h1>
+        <p class="post-description">{{ page.description }}</p>
+        <div class="post-info">
+          {% if page.date and page.undated != true -%}
+            <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%Y 年 %m 月 %d 日' }}</time>
+            <span>·</span>
+          {%- endif -%}
+          <span>initeasylife</span>
+          {%- for tag in page.tags -%}
+            <span class="post-tag"># {{ tag }}</span>
+          {%- endfor %}
+        </div>
+      </header>
+      {% if page.status == 'seed' %}
+        <aside class="notice">这是一篇待完善的笔记，保留了最初的问题与提纲。</aside>
+      {% endif %}
+      {% if page.download -%}
+        <a class="download-link" href="{{ page.download | relative_url }}" download>
+          {%- include icon.html name='file' %}
+          下载原始 R Markdown 文档 (.Rmd)
+          {% include icon.html name='arrow' -%}
+        </a>
+      {%- endif %}
+      <div class="prose" data-post-content>{{ content }}</div>
+      <div class="post-bottom">
+        <a class="text-link" href="{{ '/library/' | relative_url }}?topic={{ page.topic }}">← 回到{{ topic.name }}</a>
+        <a class="text-link" href="#main-content">回到顶部 ↑</a>
+      </div>
+      {% assign documents = site.posts | concat: site.notes -%}
+      {%- assign related = documents | where: 'topic', page.topic -%}
+      {%- if related.size > 1 %}
+        <section class="related-posts">
+          <span class="eyebrow">KEEP EXPLORING</span>
+          <h2>继续探索这个专题</h2>
+          {% assign shown = 0 -%}
+          {%- for doc in related -%}
+            {%- if doc.url != page.url and shown < 3 -%}
+              <a href="{{ doc.url | relative_url }}">
+                {{- doc.title -}}
+                {%- include icon.html name='arrow' -%}
+              </a>
+              {%- assign shown = shown | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor %}
+        </section>
+      {% endif %}
+    </article>
+    <aside class="toc-panel" aria-label="文章目录" hidden>
+      <span class="eyebrow">ON THIS PAGE</span>
+      <h2>本篇目录</h2>
+      <nav data-toc></nav>
+      <p>理解，从一个问题开始。</p>
+    </aside>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+---
+layout: default
+title: 时间归档
+nav: archive
+permalink: /archive/
+---
+<div class="page-content archive-page">
+  <div class="page-heading">
+    <span class="eyebrow">A TRAIL OF CURIOSITY</span>
+    <h1>走过的路，都有迹可循。</h1>
+    <p>沿着时间，回看每一次探索与思考。</p>
+  </div>
+  {% assign years = site.posts | group_by_exp: 'post', 'post.date | date: "%Y"' -%}
+  {%- for year in years %}
+    <section class="archive-group">
+      <div class="archive-year">
+        <h2>{{ year.name }}</h2>
+        <span>{{ year.items.size }} 篇记录</span>
+      </div>
+      <div class="archive-items">
+        {% for doc in year.items -%}
+          {%- assign topic = site.data.topics | where: 'id', doc.topic | first -%}
+          <a class="archive-item" href="{{ doc.url | relative_url }}">
+            <time>{{ doc.date | date: '%m.%d' }}</time>
+            <h3>{{ doc.title }}</h3>
+            <span class="category-label {{ topic.color }}">{{ topic.name }}</span>
+            {% include icon.html name='arrow' -%}
+          </a>
+        {%- endfor %}
+      </div>
+    </section>
+  {% endfor %}
+  <section class="archive-group">
+    <div class="archive-year">
+      <h2>札记</h2>
+      <span>未标注日期</span>
+    </div>
+    <div class="archive-items">
+      {% for doc in site.notes -%}
+        {%- assign topic = site.data.topics | where: 'id', doc.topic | first -%}
+        <a class="archive-item" href="{{ doc.url | relative_url }}">
+          <span class="archive-note-icon">{% include icon.html name='file' %}</span>
+          <h3>{{ doc.title }}</h3>
+          <span class="category-label {{ topic.color }}">{{ topic.name }}</span>
+          {% include icon.html name='arrow' -%}
+        </a>
+      {%- endfor %}
+    </div>
+  </section>
+</div>

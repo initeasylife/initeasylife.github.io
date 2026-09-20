@@ -1,0 +1,82 @@
+<aside class="sidebar" id="site-sidebar" aria-label="网站导航">
+  <a class="brand" href="{{ '/' | relative_url }}">
+    <span class="brand-mark">
+      i
+      <span>.</span>
+    </span>
+    <span>
+      initeasylife
+      <span class="brand-subtitle">一 个 人 的 知 识 花 园</span>
+    </span>
+  </a>
+  <div class="sidebar-intro">记录、理解，然后连接。</div>
+  <nav class="primary-nav" aria-label="主导航">
+    <a
+      class="nav-link {% if page.nav == 'home' %}is-active{% endif %}"
+      href="{{ '/' | relative_url }}"
+      {% if page.nav == 'home' %}
+        aria-current="page"
+      {% endif %}
+    >
+      {%- include icon.html name='grid' -%}
+      <span>知识概览</span>
+    </a>
+    <a
+      class="nav-link {% if page.nav == 'library' %}is-active{% endif %}"
+      href="{{ '/library/' | relative_url }}"
+      {% if page.nav == 'library' %}
+        aria-current="page"
+      {% endif %}
+    >
+      {%- include icon.html name='book' -%}
+      <span>全部文档</span>
+      <span class="nav-count">{{ documents.size }}</span>
+    </a>
+    <a
+      class="nav-link {% if page.nav == 'archive' %}is-active{% endif %}"
+      href="{{ '/archive/' | relative_url }}"
+      {% if page.nav == 'archive' %}
+        aria-current="page"
+      {% endif %}
+    >
+      {%- include icon.html name='archive' -%}
+      <span>时间归档</span>
+    </a>
+  </nav>
+  <div class="nav-label">
+    探索专题
+    <span>TOPICS</span>
+  </div>
+  <nav class="topic-nav" aria-label="文档分类">
+    {% for topic in site.data.topics -%}
+      {%- assign topic_docs = documents | where: 'topic', topic.id %}
+      <a
+        class="nav-link {% if page.topic == topic.id %}is-active{% endif %}"
+        data-topic-link="{{ topic.id }}"
+        href="{{ '/library/' | relative_url }}?topic={{ topic.id }}"
+      >
+        <span class="topic-dot {{ topic.color }}"></span>
+        <span>{{ topic.name }}</span>
+        <span class="nav-count">{{ topic_docs.size }}</span>
+      </a>
+    {% endfor %}
+  </nav>
+  <div class="sidebar-bottom">
+    <a class="nav-link {% if page.nav == 'about' %}is-active{% endif %}" href="{{ '/about/' | relative_url }}">
+      {%- include icon.html name='info' -%}
+      <span>关于这里</span>
+    </a>
+    <div class="garden-note">
+      <span class="growing-dot"></span>
+      知识在积累，好奇心在生长。
+      <small>A little progress, every day.</small>
+    </div>
+    <div class="sidebar-social">
+      <a href="https://github.com/{{ site.github_username }}" aria-label="GitHub">
+        {%- include icon.html name='github' -%}
+      </a>
+      <a href="{{ '/feed.xml' | relative_url }}" aria-label="RSS 订阅">{% include icon.html name='rss' %}</a>
+      <span>© {{ site.time | date: '%Y' }} initeasylife</span>
+    </div>
+  </div>
+</aside>

@@ -1,24 +1,18 @@
 ---
 layout: default
+title: 页面未找到
+permalink: /404.html
 ---
-
-<style type="text/css" media="screen">
-  .container {
-    margin: 10px auto;
-    max-width: 600px;
-    text-align: center;
-  }
-  h1 {
-    margin: 30px 0;
-    font-size: 4em;
-    line-height: 1;
-    letter-spacing: -1px;
-  }
-</style>
-
-<div class="container">
-  <h1>404</h1>
-
-  <p><strong>Page not found :(</strong></p>
-  <p>The requested page could not be found.</p>
+<div class="page-content error-page">
+  <span class="eyebrow">A SMALL DETOUR</span>
+  <div class="error-number">
+    404
+    <span>.</span>
+  </div>
+  <h1>这条小径，还没有笔记。</h1>
+  <p>页面可能已经移动，回到花园继续探索吧。</p>
+  <a class="button button-primary" href="{{ '/library/' | relative_url }}">
+    浏览全部文档
+    {% include icon.html name='arrow' -%}
+  </a>
 </div>

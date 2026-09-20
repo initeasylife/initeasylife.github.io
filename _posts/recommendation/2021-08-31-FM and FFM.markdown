@@ -1,0 +1,18 @@
+---
+layout: "post"
+title: "FM 与 FFM：特征交叉的计算"
+date: "2021-08-21 09:47:50 +0800"
+topic: "recommendation"
+categories: ["recommendation"]
+tags: ["FM", "FFM", "特征交叉"]
+description: "利用完全平方与平方项之差，理解因子分解机交叉项的计算复杂度。"
+permalink: "/jekyll/update/2021/08/21/FM-and-FFM.html"
+---
+
+# FM
+## 为什么FM一顿操作把复杂度从$O(kn^2)$降低到$O(kn)$????????
+$$\sum_{i=1}^n \sum_{j=i+1}^n \langle v_i,v_j \rangle x_ix_j$$
+
+因为交叉项=(完全平方-平方项)/2
+
+$$\sum_{i=1}^n \sum_{j=i+1}^n \langle v_i,v_j \rangle=\frac{(\sum_{i=1}^nv_i)\cdot (\sum_{j=1}^nv_j)-\sum_{i=1}^nv_i \cdot v_j}{2}$$
